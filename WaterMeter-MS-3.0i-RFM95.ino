@@ -37,12 +37,12 @@
  *  04-Dec-2016 3.0g  TRL - Added Si7021
  *  14-Dec-2016 3.0h  TRL - Setup for rev 3a board and MCP9800
  *  19-Dec-2016 3.0i  TRL - added 1hr flow and flow alarm, set temp to F
- *  
+ *  30-Dec-2016 3.0j  TRL - Change freq to 928.5MHz
  *
- *  Notes:  1)  Tested with Arduino 1.6.13
+ *  Notes:  1)  Tested with Arduino 1.8.0
  *          2)  Testing using Moteino LR Rev4 with RFM95
  *          3)  Sensor 1 board, Rev2a and Rev3a
- *          4)  MySensor 2.1b 4 Dec 2016
+ *          4)  MySensor 2.1 30 Dec 2016
  *    
  *  Some information on the water meter and flow rated
  *         Gal/per/min            period
@@ -79,8 +79,8 @@ MCP980X MCP9800(0);
 
 /* ************************************************************************************** */
 // Define the board options
-//#define R2A                 // Rev 2a of the board
-#define R3A                   // Rev 3a of the board
+#define R2A                 // Rev 2a of the board
+//#define R3A                   // Rev 3a of the board
 //#define Sensor_SI7021       // Using the Si7021 Temp and Humidity sensor
 #define Sensor_MCP9800        // Using the MCP9800 temp sensor
 
@@ -92,11 +92,11 @@ MCP980X MCP9800(0);
 //#define MY_DEBUG            // used by MySensor
 //#define MY_SPECIAL_DEBUG
 //#define MY_DEBUG_VERBOSE_RFM95 
-#define MY_DEBUG1           // used in this program, level 1 debug
+//#define MY_DEBUG1           // used in this program, level 1 debug
 //#define MY_DEBUG2           // used in this program, level 2 debug
 
 #define SKETCHNAME      "Water and Pressure Meter"
-#define SKETCHVERSION   "3.0i"
+#define SKETCHVERSION   "3.0j"
 
 /* ************************************************************************************** */
 // Enable and select radio type attached, coding rate and frequency
@@ -117,7 +117,7 @@ MCP980X MCP9800(0);
 #define MY_RFM95_TX_POWER               23 // max is 23
 //#define MY_RFM95_ATC_MODE_DISABLED
 #define MY_RFM95_ATC_TARGET_RSSI        (-60)
-#define MY_RFM95_FREQUENCY              (915.0f)
+#define MY_RFM95_FREQUENCY              (928.5f)
 
 
 /* ************************************************************************************** */
