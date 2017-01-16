@@ -81,8 +81,8 @@ MCP980X MCP9800(0);
 // Define the board options
 #define R2A                 // Rev 2a of the board
 //#define R3A                   // Rev 3a of the board
-//#define Sensor_SI7021       // Using the Si7021 Temp and Humidity sensor
-#define Sensor_MCP9800        // Using the MCP9800 temp sensor
+#define Sensor_SI7021       // Using the Si7021 Temp and Humidity sensor
+//#define Sensor_MCP9800        // Using the MCP9800 temp sensor
 
 
 /* ************************************************************************************** */
@@ -242,7 +242,7 @@ void hexdump(unsigned char *buffer, unsigned long index, unsigned long width);
 /* ************************************************************************************** */
 unsigned long SEND_FREQUENCY        = 15000;      // Minimum time between send (in milliseconds). We don't want to spam the gateway.
 unsigned long FLOW_RESET_FREQUENCY  = 180000;     // Time to reset flow to zero if no pulse 121000 = 2 min + 1sec
-unsigned long KEEPALIVE_FREQUENCY   = 120000;     // Send Keep Alive message at this rate
+unsigned long KEEPALIVE_FREQUENCY   = 600000;     // Send Keep Alive message at this rate 600,000 = 10 min
 unsigned long DAY_FREQUENCY         = 86400000;   // 24 hr in ms
 unsigned long HOUR_FREQUENCY        = 3600000;    // 1 hr in ms
 unsigned long ContFlowRateFREQUENCY = 7200000;    // this is the time interval to check and see if we have excessive flow. 7200000 = 2 hr
@@ -397,9 +397,7 @@ void setup()
 #endif
 
 #if defined Sensor_MCP9800
-    MCP9800.writeConfig(ADC_RES_12BITS);       //max resolution, 0.0625 °C
-//    MCP9800.writeTempC2(HYSTERESIS, 0 * 2);    //freezing
-//    MCP9800.writeTempC2(LIMITSET, 100 * 2);    //boiling
+    MCP9800.writeConfig(ADC_RES_12BITS);       // max resolution, 0.0625 °C
 #endif
   
 } // end setup()
@@ -551,15 +549,15 @@ void CheckExcessiveFlow()
     {
         if (!flowFlag) 
         {
-          flowFlag= true;                         // we have high flow
-          ContFlowRateTime = currentTime;   // save the current time
+          flowFlag= true;                       // we have high flow
+          ContFlowRateTime = currentTime;       // save the current time
         }   
     }  
       
     else 
     {
       flowFlag = false;   
-     // ContFlowRateTime = currentTime;     // save the current time
+     // ContFlowRateTime = currentTime;         // save the current time
     }
 }
 
@@ -570,14 +568,14 @@ void CheckExcessiveFlow()
 void loop()     
 { 
   wdt_reset();
-  currentTime = millis();                             // get the current time
+  currentTime = millis();                                   // get the current time
 
  /* ***************** Send Pulse Count, Flow and Volume ***************** */
-  if (currentTime - lastSendTime >= SEND_FREQUENCY)   // Only send values at a maximum rate  
+  if (currentTime - lastSendTime >= SEND_FREQUENCY)         // Only send values at a maximum rate  
     {    
       /* ***************** Pulse Count ***************** */
       // Lets see if Pulse Count has changed
-      if (pulseCount != oldPulseCount)                              // only send if pulse count has changed
+      if (pulseCount != oldPulseCount)                                // only send if pulse count has changed
       {
           unsigned int deltaPulseCount = pulseCount - oldPulseCount;  // for test only
           oldPulseCount = pulseCount;
@@ -603,7 +601,7 @@ void loop()
           if (flow < ((unsigned long) MAX_FLOW)) 
             {
               floatMSB = flow * 100;                                     // we donot have floating point printing in debug print
-              floatR = floatMSB % 100;                                    // so we will breakup float to integer parts
+              floatR = floatMSB % 100;                                   // so we will breakup float to integer parts
               debug1(PSTR("gal/min: %0u.%02u \n"), floatMSB/100, floatR);
               send(flowMsg.set(flow, 2), false); wait(200);              // Send flow value to gateway
                     
@@ -635,7 +633,7 @@ void loop()
 
 /* ***************** check if we need to reset flow to Zero ***************** */
     if (currentTime - flowresetTime >= FLOW_RESET_FREQUENCY)              // after a period of time, we will reset flow to zero if we have not
-      {                                                                   // receive any pulses during that time. This keep the old flow from re sending
+      {                                                                   //   receive any pulses during that time. This keep the old flow from re sending
           if (flow > 0) 
           {
             debug1(PSTR("Setting flow to zero\n"));
