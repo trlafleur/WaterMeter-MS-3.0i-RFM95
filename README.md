@@ -1,6 +1,6 @@
 # WaterMeter-MS-3.0i-RFM95
 
-Data from the sensor to MQTT-gateway to MQTT to (Telegraf to InFluxdb to Grafinea)
+Data from the sensor to MQTT-gateway to MQTT to (Telegraf to InFluxdb to Grafana)
 Controller function via NODE.RED connected via MQTT.
 
 
