@@ -22,6 +22,8 @@ Powered via an 8 to 28v AC or DC external power source
 
 Processor is a Moteino R4 LoRa with a RFM95
 
+Sends: Gal per minutes, per hour, per day and per current flow,
+Total gallons, Air Temperature, humidity and water pressure.
 
 https://www.dwyer-inst.com/Product/Flow/WaterMeters/SeriesWMT2
 
