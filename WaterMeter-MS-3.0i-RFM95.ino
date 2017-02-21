@@ -38,6 +38,7 @@
  *  14-Dec-2016 3.0h  TRL - Setup for rev 3a board and MCP9800
  *  19-Dec-2016 3.0i  TRL - added 1hr flow and flow alarm, set temp to F
  *  30-Dec-2016 3.0j  TRL - Change freq to 928.5MHz
+ *  12-Feb-2017 3.0k  TRL - Making changes to flow and flow reset
  *
  *  Notes:  1)  Tested with Arduino 1.8.0
  *          2)  Testing using Moteino LR Rev4 with RFM95
@@ -638,10 +639,10 @@ void loop()
           {
             debug1(PSTR("Setting flow to zero\n"));
             flow = 0;
-            send(TextMsg.set("Reset Flow"), false);  wait(200); 
+            //send(TextMsg.set("Reset Flow"), false);  wait(200); 
             send(flowMsg.set(flow, 2), false);  wait(200);                // Send zero flow value to gateway 
             
-            // its time to send total volume for this run                
+            // its time to send total volume for this period               
             double volume = ((double) (pulseCount - flow_pulseCount) / ((double) PULSE_FACTOR));     
             debug1(PSTR("Volume (gal): %u\n"), (unsigned int) volume );
             send(volumeMsg.set (volume, 0), false); wait(200);            // Send total volume this period to gateway
